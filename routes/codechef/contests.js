@@ -39,6 +39,13 @@ function parseHtml(document, res) {
     };
 }
 
+function toUnix(date_string) {
+    var date = new Date(date_string);
+    var unix = date.getTime() / 1000;
+    return unix;
+}
+
+
 function getContests(table) {
     table = "<table>" + table.innerHTML + "</table>";
     $ = cheerio.load(table);
@@ -50,8 +57,9 @@ function getContests(table) {
         var json = {};
         json['code'] = data[0][i];
         json['name'] = data[1][i];
-        json['start'] = data[2][i];
-        json['end'] = data[3][i];
+        json['start'] = toUnix(data[2][i]);
+        json['end'] = toUnix(data[3][i]);
+        json['duration'] = json['end'] - json['start'];
         ret.push(json);
     }
     return ret;

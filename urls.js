@@ -19,6 +19,7 @@ var json = {
         "Host": "www.codechef.com",
         "Upgrade-Insecure-Requests": 1,
         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:60.0) Gecko/20100101 Firefox/60.0"
-    }
+    },
+    codeforces_contests:"http://codeforces.com/api/contest.list"
 };
 module.exports = json;
