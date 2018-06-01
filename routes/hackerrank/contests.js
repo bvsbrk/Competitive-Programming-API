@@ -7,7 +7,7 @@ var router = express.Router();
 
 
 var request = require('request');
-var config = require('../../urls');
+var urls = require('../../urls');
 
 request = request.defaults({jar: true});
 
