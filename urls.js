@@ -8,7 +8,10 @@ var json = {
     hackerrank_contests: "https://www.hackerrank.com/contests",
     hackerrank_leaderboard: "https://www.hackerrank.com/contests/contest_id/leaderboard/page_no",
     hackerrank_profile: "https://www.hackerrank.com/username?hr_r=1",
+
+    //codechef contests
     codechef_contests: "https://www.codechef.com/contests",
+    codechef_contest_link:"https://www.codechef.com/contest_code",
     codechef_leaderboard: "https://www.codechef.com/rankings/contest_id?&page=page_no",
     codechef_profile: "https://www.codechef.com/users/user_name",
     codechef_header: {
@@ -20,6 +23,8 @@ var json = {
         "Upgrade-Insecure-Requests": 1,
         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:60.0) Gecko/20100101 Firefox/60.0"
     },
+
+
     codeforces_contests:"http://codeforces.com/api/contest.list"
 };
 module.exports = json;
