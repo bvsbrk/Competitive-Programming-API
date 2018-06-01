@@ -5,23 +5,37 @@
 var express = require('express');
 var router = express.Router();
 var request = require('request');
-const cheerio = require('cheerio');
 var config = require('../../urls');
 
 router.get('/', function (req, res, next) {
-
-    fetch_html(res);
-
+    var options = {
+        url: config.codeforces_contests
+    };
+    request(options, function (error, response, body) {
+        var resp=[];
+        body = JSON.parse(body);
+        if (body['status'] === "OK") {
+            resp = parse(body['result']);
+        } else {
+            resp = [];
+        }
+        res.json(resp);
+    });
 });
 
-function fetch_html(res) {
-    request(config.hackerrank_contests, function (error, response, body) {
-        fetch_contests(res, body);
+function parse(body) {
+    var ret = [];
+    body.forEach(function (cur, idx) {
+        var json = {};
+        json['id'] = cur['id'];
+        json['name'] = cur['name'];
+        json['duration'] = cur['durationSeconds'];
+        json['start'] = cur['startTimeSeconds'];
+        json['end'] = cur['startTimeSeconds'] + cur['durationSeconds'];
+        ret.push(json);
     });
+    return ret;
 }
 
-var fetch_contests = function (res, body) {
-    res.send(body);
-};
 
 module.exports = router;
