@@ -17,10 +17,14 @@ module.exports = function (app) {
     app.use('/codechef/contests', require('./codechef/contests'));
     app.use('/codechef/leaderboard', require('./codechef/leaderboard'));
     app.use('/codechef/profile', require('./codechef/profile'));
-    
+
     //codeforces routes here
     app.use('/codeforces', require('./codeforces'));
     app.use('/codeforces/contests', require('./codeforces/contests'));
     app.use('/codeforces/leaderboard', require('./codeforces/leaderboard'));
     app.use('/codeforces/profile', require('./codeforces/profile'));
+
+    //hackerearth routes here
+    app.use('/hackerearth', require('./hackerearth'));
+    app.use('/hackerearth/contests', require('./hackerearth/contests'));
 };

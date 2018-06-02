@@ -10,7 +10,5 @@ router.get('/', function (req, res, next) {
     res.send('Hello hackerrank index');
 });
 
-var contestsRouter = require('./contests');
-router.use('/contests/', contestsRouter);
 
 module.exports = router;
