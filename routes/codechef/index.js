@@ -7,7 +7,7 @@ var router = express.Router();
 
 /* GET home page. */
 router.get('/', function (req, res, next) {
-    res.send('Hello hackerrank index');
+    res.send('codechef index');
 });
 
 module.exports = router;

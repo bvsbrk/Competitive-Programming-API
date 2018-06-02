@@ -1,5 +1,5 @@
 /**
- * Created by koteswarao on 31-05-2018.
+ * Created by koteswarao on 01-06-2018.
  */
 
 var express = require('express');
@@ -7,7 +7,7 @@ var router = express.Router();
 
 /* GET home page. */
 router.get('/', function (req, res, next) {
-    res.send('codeforces index');
+    res.send('hackerearth index');
 });
 
 
