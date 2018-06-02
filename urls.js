@@ -32,18 +32,18 @@ var json = {
     hackerearth_contests: "https://www.hackerearth.com/chrome-extension/events/",
 
     //csacademy urls
-    csacademy_contests:"https://csacademy.com/contests/?", // fetching from cs academy api
+    csacademy_contests: "https://csacademy.com/contests/?", // fetching from cs academy api
     //csacademy has api for leaderboard too
     csacademy_leaderboard: "https://csacademy.com/contest/round-number/scoreboard/",
-    csacademy_header:{
+    csacademy_header: {
         "Accept": "*/*",
         "Accept-Language": "en-US,en;q=0.5",
         "Connection": "keep-alive",
         "Host": "csacademy.com",
         "Upgrade-Insecure-Requests": 1,
-        "DNT":1,
-        "Referer":"https://csacademy.com/contests/",
-        "x-requested-with":"XMLHttpRequest",
+        "DNT": 1,
+        "Referer": "https://csacademy.com/contests/",
+        "x-requested-with": "XMLHttpRequest",
         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:61.0) Gecko/20100101 Firefox/61.0"
     }
 };

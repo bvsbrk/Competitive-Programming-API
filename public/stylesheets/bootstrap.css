@@ -1352,7 +1352,7 @@ html {
 
 body {
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-    font-size: 14px;
+    font-size: 25px;
     line-height: 1.42857143;
     color: #333;
     background-color: #fff
@@ -1797,7 +1797,6 @@ pre {
     display: block;
     padding: 9.5px;
     margin: 0 0 10px;
-    font-size: 13px;
     line-height: 1.42857143;
     color: #333;
     word-break: break-all;
@@ -5684,10 +5683,9 @@ a.thumbnail.active, a.thumbnail:focus, a.thumbnail:hover {
 .list-group-item {
     position: relative;
     display: block;
-    padding: 10px 15px;
+    padding: 15px 15px;
     margin-bottom: -1px;
-    background-color: #fff;
-    border: 1px solid #ddd
+    border: 2px solid #ddd;
 }
 
 .list-group-item:first-child {

@@ -5,16 +5,59 @@
     <title>API Guide</title>
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="stylesheets/bootstrap.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="stylesheets/style.css">
     <link href="https://fonts.googleapis.com/css?family=Fira+Sans" rel="stylesheet">
+    <script type="text/javascript" src="javascripts/script.js"></script>
 </head>
 <body>
 <div class="container-fluid">
     <div class="row">
         <header class="header">
-            <h4>Competitive Programming API</h4>
+            <h1>Competitive Programming API</h1>
         </header>
+    </div>
+    <div class="h1">Capable of fetching contests from:</div>
+    <ul class="list-group list-group-flush">
+        <li class="list-group-item">Hackerrank</li>
+        <li class="list-group-item">Codechef</li>
+        <li class="list-group-item">Codeforces</li>
+        <li class="list-group-item">Hackerearth</li>
+        <li class="list-group-item">CS Academy</li>
+        <li class="list-group-item">Top coder</li>
+    </ul>
+    <div class="fetch-contests">
+        <div class="h2">
+            Fetching contests data:
+        </div>
+        <div >
+            Contests can be fetched by passing the name of the site as follows:
+        </div>
+        <code>
+            https://api-coders-kit.herokuapp.com/site_name/contests
+        </code>
+        <div>
+            <div>
+                <u>Example:</u> Contests of codechef can be fetched by
+                <code>
+                    <a href="https://api-coders-kit.herokuapp.com/codechef/contests" target="_blank">https://api-coders-kit.herokuapp.com/codechef/contests</a>
+                </code></div>
+        </div>
+        <div class="h2">
+            Response:
+        </div>
+        <div id="codechef-contests-response">
+
+        </div>
+        <div>
+            <p>
+                Response as shown above will be sent but the only difference is that each and every live and future and
+                past contests will be sent.
+                It will be in the pure json format without any style applied.The start and end time will be shown in UNIX time format.
+                It can be easily converted to required time zone.
+            </p>
+        </div>
     </div>
 </div>
 </body>

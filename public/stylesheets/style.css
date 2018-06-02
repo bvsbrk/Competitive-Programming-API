@@ -1,6 +1,4 @@
 body {
-    font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
-    background-color: #EEEEEE;
     font-family: 'Fira Sans', sans-serif;
 }
 
@@ -10,7 +8,40 @@ a {
 
 .header {
     background-color: #424242;
-    padding: 10px;
+    padding: 10px 10px 15px 10px;
     text-align: center;
+    color: #ffffff;
     box-shadow: 4px 4px 8px 0 #BDBDBD;
+}
+
+.fetch-contests {
+    background: #EEEEEE;
+    padding: 10px 10px 10px 10px;
+    border-radius: 6px;
+}
+
+pre {
+    outline: 1px solid #ccc;
+    padding: 5px;
+    margin: 5px;
+}
+
+.string {
+    color: green;
+}
+
+.number {
+    color: darkorange;
+}
+
+.boolean {
+    color: blue;
+}
+
+.null {
+    color: magenta;
+}
+
+.key {
+    color: red;
 }
