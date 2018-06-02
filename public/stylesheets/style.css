@@ -1,8 +1,16 @@
 body {
-  padding: 50px;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+    font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+    background-color: #EEEEEE;
+    font-family: 'Fira Sans', sans-serif;
 }
 
 a {
-  color: #00B7FF;
+    color: #00B7FF;
+}
+
+.header {
+    background-color: #424242;
+    padding: 10px;
+    text-align: center;
+    box-shadow: 4px 4px 8px 0 #BDBDBD;
 }

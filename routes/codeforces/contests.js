@@ -33,7 +33,7 @@ function parse(body) {
     };
     body.forEach(function (cur) {
         var json = {};
-        json['id'] = cur['id'];
+        json['code'] = cur['id'];
         json['name'] = cur['name'];
         json['duration'] = cur['durationSeconds'];
         json['start'] = cur['startTimeSeconds'];
