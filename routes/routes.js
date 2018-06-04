@@ -6,7 +6,7 @@
 module.exports = function (app) {
     app.use('/', require('../routes'));
 
-    //hackerrank routes here
+    //csacademy routes here
     app.use('/csacademy', require('./csacademy'));
     app.use('/csacademy/contests', require('./csacademy/contests'));
     app.use('/csacademy/leaderboard', require('./csacademy/leaderboard'));
@@ -27,4 +27,10 @@ module.exports = function (app) {
     //hackerearth routes here
     app.use('/hackerearth', require('./hackerearth'));
     app.use('/hackerearth/contests', require('./hackerearth/contests'));
+
+    //hackerrank routes here
+    app.use('/hackerrank', require('./hackerrank'));
+    app.use('/hackerrank/contests', require('./hackerrank/contests'));
+    app.use('/hackerrank/leaderboard', require('./hackerrank/leaderboard'));
+    app.use('/hackerrank/profile', require('./hackerrank/profile'));
 };
