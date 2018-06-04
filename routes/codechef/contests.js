@@ -28,26 +28,29 @@ router.get('/', function (req, res, next) {
     });
 });
 
-
-/*
- * The below route is for setting limit to past contests
- */
+/* Below router is for setting limit to past contests */
 router.get('/past/:limit', function (req, res, next) {
+
+    var limit = req.params.limit;
+
     var options = {
         url: urls.codechef_contests,
         headers: urls.codechef_header
     };
 
-    var limit = req.params.limit;
-
     request(options, function (error, response, body) {
         const dom = new jsdom.JSDOM(body);
-        var resp = parseHtml(dom.window.document, 10);
+        var resp = parseHtml(dom.window.document);
+
+        var required = [];
+        for (var i = 0; i < Math.min(resp.past.length, limit); i++) required.push(resp.past[i]);
+        resp.past = required;
+
         res.json(resp);
     });
 });
 
-function parseHtml(document, limit) {
+function parseHtml(document) {
     var tables = document.getElementsByClassName("dataTable");
     var live = tables[0];
     var future = tables[1];
@@ -55,12 +58,12 @@ function parseHtml(document, limit) {
     return {
         live: getContests(live),
         future: getContests(future),
-        past: getContests(past, limit)
+        past: getContests(past)
     };
 }
 
 
-function getContests(table, limit) {
+function getContests(table) {
     table = "<table>" + table.innerHTML + "</table>";
     $ = cheerio.load(table);
     tableParser($);
@@ -74,17 +77,7 @@ function getContests(table, limit) {
      * So if time is less than above unix time it will have only one link
      * Otherwise it will have two links div A and div B
      */
-
-    /*
-     * Check if limit is actually defined
-     * If limit is not defined for loop iterates until the length of data
-     * If limit is defined for loop iterates only until the limit is reached
-     * The limit has also check one more thing that is limit should not increase actual length
-     */
-
-
-    limit = limit ? limit : Math.min(limit, data[0].length);
-    for (var i = 1; i <= limit; i++) {
+    for (var i = 1; i < data[0].length; i++) {
         var json = {};
         json['code'] = data[0][i];
         json['name'] = data[1][i];
@@ -95,11 +88,9 @@ function getContests(table, limit) {
         json['divB_link'] = json['start'] < 1519896600 ? "" : urls.codechef_contest_link.replace("contest_code", json['code'] + "B");
         json['normal_link'] = urls.codechef_contest_link.replace("contest_code", json['code']);
         /*
-
          Normal link is given to all even though they are with rating
          This is to avoid invalid page links for non-codechef contests
          Normal page link is valid even for divisioned contests
-
          */
         ret.push(json);
     }
