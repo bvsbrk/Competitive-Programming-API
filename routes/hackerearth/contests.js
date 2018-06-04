@@ -8,6 +8,7 @@ var router = express.Router();
 
 var request = require('request');
 var urls = require('../../urls');
+var config = require('../../config');
 
 request = request.defaults({jar: true});
 
@@ -17,14 +18,32 @@ router.get('/', function (req, res, next) {
     };
     request(options, function (error, response, body) {
         body = JSON.parse(body);
-        var resp = {
-            live: [],
-            future: [],
-            past: []
-        };
-        res.json(body);
+        var resp = parse(body.response);
+        res.json(resp);
     });
 });
+
+function parse(body) {
+    var resp = {
+        live: [],
+        future: [],
+        past: []
+    };
+    body.forEach(function (cur) {
+        var json = {};
+        json['name'] = cur['title'];
+        json['url'] = cur['url'];
+        json['start'] = config.normal_to_unix(cur['start_utc_tz']);
+        json['end'] = config.normal_to_unix(cur['end_utc_tz']);
+        json['duration'] = json['end'] - json['start'];
+        json['type'] = cur['challenge_type'];
+        json['image_link'] = cur['cover_image'];
+        if (cur['status'] === "ONGOING") resp.live.push(json);
+        else if (cur['status'] === "UPCOMING") resp.future.push(json);
+        else resp.past.push(json);
+    });
+    return resp;
+}
 
 
 module.exports = router;
