@@ -22,7 +22,7 @@ router.get('/', function (req, res, next) {
     request(options, function (error, response, body) {
         body = JSON.parse(body);
         var resp = parse(body['state']['Contest']);
-        res.json(body);
+        res.json(resp);
     });
 
 });
