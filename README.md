@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.com/bvsbrk/Competitive-Programming-API.svg?token=9FhXKxyCew5oAVPyqzzH&branch=master)](https://travis-ci.com/bvsbrk/Competitive-Programming-API)
+
 # Competitive-Programming-API
 backend of coder's kit and can also be used as a general purpose api
 
