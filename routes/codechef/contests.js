@@ -28,7 +28,26 @@ router.get('/', function (req, res, next) {
     });
 });
 
-function parseHtml(document) {
+
+/*
+ * The below route is for setting limit to past contests
+ */
+router.get('/past/:limit', function (req, res, next) {
+    var options = {
+        url: urls.codechef_contests,
+        headers: urls.codechef_header
+    };
+
+    var limit = req.params.limit;
+
+    request(options, function (error, response, body) {
+        const dom = new jsdom.JSDOM(body);
+        var resp = parseHtml(dom.window.document, 10);
+        res.json(resp);
+    });
+});
+
+function parseHtml(document, limit) {
     var tables = document.getElementsByClassName("dataTable");
     var live = tables[0];
     var future = tables[1];
@@ -36,12 +55,12 @@ function parseHtml(document) {
     return {
         live: getContests(live),
         future: getContests(future),
-        past: getContests(past)
+        past: getContests(past, limit)
     };
 }
 
 
-function getContests(table) {
+function getContests(table, limit) {
     table = "<table>" + table.innerHTML + "</table>";
     $ = cheerio.load(table);
     tableParser($);
@@ -55,7 +74,17 @@ function getContests(table) {
      * So if time is less than above unix time it will have only one link
      * Otherwise it will have two links div A and div B
      */
-    for (var i = 1; i < data[0].length; i++) {
+
+    /*
+     * Check if limit is actually defined
+     * If limit is not defined for loop iterates until the length of data
+     * If limit is defined for loop iterates only until the limit is reached
+     * The limit has also check one more thing that is limit should not increase actual length
+     */
+
+
+    limit = limit ? limit : Math.min(limit, data[0].length);
+    for (var i = 1; i <= limit; i++) {
         var json = {};
         json['code'] = data[0][i];
         json['name'] = data[1][i];
@@ -67,9 +96,9 @@ function getContests(table) {
         json['normal_link'] = urls.codechef_contest_link.replace("contest_code", json['code']);
         /*
 
-        Normal link is given to all even though they are with rating
-        This is to avoid invalid page links for non-codechef contests
-        Normal page link is valid even for divisioned contests
+         Normal link is given to all even though they are with rating
+         This is to avoid invalid page links for non-codechef contests
+         Normal page link is valid even for divisioned contests
 
          */
         ret.push(json);

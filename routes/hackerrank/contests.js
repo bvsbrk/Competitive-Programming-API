@@ -15,11 +15,44 @@ router.get('/', function (req, res, next) {
     request("https://www.hackerrank.com/calendar/cal.ics", function (err, resp, body) {
         var json = ical2json.convert(body);
         var resp = parse(json['VCALENDAR'][0]['VEVENT']);
+        resp.hackerrank.past.reverse();
         res.json(resp);
     })
 });
 
-function parse(received) {
+/*
+ * Below router is for setting limit to past contests
+ */
+
+router.get('/past/:limit', function (req, res, next) {
+
+    var limit = req.params.limit;
+
+    /*
+     * Here past contests fetched are not recent, they are fetched from beginning of time.
+     * So here we have to take last ${limit} contests to get the recent ones.
+     */
+
+    request("https://www.hackerrank.com/calendar/cal.ics", function (err, resp, body) {
+        var json = ical2json.convert(body);
+        var resp = parse(json['VCALENDAR'][0]['VEVENT'], limit);
+        if (typeof limit !== 'undefined') {
+            var recent = [];
+            for (var i = 0; i < Math.min(limit, resp.hackerrank.past.length); i++) {
+                recent.push(resp.hackerrank.past[resp.hackerrank.past.length - i - 1]);
+            }
+            resp.hackerrank.past = recent;
+            recent = [];
+            for (i = 0; i < Math.min(limit, resp.topcoder.past.length); i++) {
+                recent.push(resp.topcoder.past[resp.topcoder.past.length - i - 1]);
+            }
+            resp.topcoder.past = recent;
+        }
+        res.json(resp);
+    })
+});
+
+function parse(received, limit) {
     var resp = {
         hackerrank: {
             live: [],
