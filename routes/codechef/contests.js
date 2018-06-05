@@ -12,7 +12,7 @@ var cheerio = require('cheerio');
 var tableParser = require('cheerio-tableparser');
 var config = require('../../config');
 
-const jsdom = require("jsdom");
+var jsdom = require("jsdom");
 request = request.defaults({jar: true});
 
 router.get('/', function (req, res, next) {
@@ -22,7 +22,7 @@ router.get('/', function (req, res, next) {
     };
 
     request(options, function (error, response, body) {
-        const dom = new jsdom.JSDOM(body);
+        var dom = new jsdom.JSDOM(body);
         var resp = parseHtml(dom.window.document);
         res.json(resp);
     });
@@ -39,7 +39,7 @@ router.get('/past/:limit', function (req, res, next) {
     };
 
     request(options, function (error, response, body) {
-        const dom = new jsdom.JSDOM(body);
+        var dom = new jsdom.JSDOM(body);
         var resp = parseHtml(dom.window.document);
 
         var required = [];
@@ -96,4 +96,5 @@ function getContests(table) {
     }
     return ret;
 }
+
 module.exports = router;
