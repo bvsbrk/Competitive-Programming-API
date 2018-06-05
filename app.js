@@ -34,12 +34,11 @@ app.use(function (err, req, res, next) {
     if (dev) {
         res.locals.message = err.message;
         res.locals.error = err;
-
         // render the error page
         res.status(err.status || 500);
         res.render('error');
     } else {
-        fs.readFile(__dirname + "/../public/error.html", "utf8", function (err, resp) {
+        fs.readFile(__dirname + "/public/error.html", "utf8", function (err, resp) {
             res.send(resp);
         });
     }
