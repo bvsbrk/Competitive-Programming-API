@@ -22,7 +22,7 @@ module.exports = function (res, callback, limit) {
             resp.past = required;
         }
 
-        callback(resp, res);
+        callback(res, resp);
     });
 };
 

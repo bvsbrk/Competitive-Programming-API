@@ -21,7 +21,7 @@ router.get('/', function (req, res, next) {
 });
 
 
-function callback(resp, res) {
+function callback(res, resp) {
     res.json(resp);
 }
 
