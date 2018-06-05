@@ -15,7 +15,14 @@ module.exports = function (res, callback, limit) {
     request(options, function (error, response, body) {
         var dom = new jsdom.JSDOM(body);
         var resp = parseHtml(dom.window.document);
-        callback(resp, res, limit);
+
+        if (typeof limit !== 'undefined') {
+            var required = [];
+            for (var i = 0; i < Math.min(resp.past.length, limit); i++) required.push(resp.past[i]);
+            resp.past = required;
+        }
+
+        callback(resp, res);
     });
 };
 
