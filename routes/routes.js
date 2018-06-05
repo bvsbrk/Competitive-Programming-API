@@ -6,6 +6,9 @@
 module.exports = function (app) {
     app.use('/', require('../routes'));
 
+    /* Route for fetching all contests from all sites */
+    app.use('/all', require('./all'));
+
     //csacademy routes here
     app.use('/csacademy', require('./csacademy'));
     app.use('/csacademy/contests', require('./csacademy/contests'));
