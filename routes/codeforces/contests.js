@@ -2,28 +2,24 @@
  * Created by koteswarao on 31-05-2018.
  */
 
+/*
+ * When this route is matched a call will be made to get_contests in ../../api/codeforces/get_contests
+ * There in that file everything is done from retrieving content to parsing it.
+ * When it's job is done it runs the callback function it gets from the routes below.
+ */
 var express = require('express');
 var router = express.Router();
-var request = require('request');
-var urls = require('../../urls');
+var contests = require('../../api/codeforces/get_contests');
 
 router.get('/', function (req, res, next) {
-    var options = {
-        url: urls.codeforces_contests
-    };
-    request(options, function (error, response, body) {
-        var resp = {
-            live: [],
-            future: [],
-            past: []
-        };
-        body = JSON.parse(body);
-        if (body['status'] === "OK") {
-            resp = parse(body['result']);
-        }
-        res.json(resp);
-    });
+
+    contests(res, callback);
+
 });
+
+function callback(res, resp) {
+    res.json(resp);
+}
 
 /*
  * The below route is for setting limit to past contests
@@ -32,51 +28,9 @@ router.get('/', function (req, res, next) {
 router.get('/past/:limit', function (req, res, next) {
 
     var limit = req.params.limit;
-    var options = {
-        url: urls.codeforces_contests
-    };
-    request(options, function (error, response, body) {
-        var resp = {
-            live: [],
-            future: [],
-            past: []
-        };
-        body = JSON.parse(body);
-        if (body['status'] === "OK") {
-            resp = parse(body['result'], limit);
-        }
-        res.json(resp);
-    });
-});
+    contests(res, callback, limit);
 
-function parse(body, limit) {
-    var ret = {
-        live: [],
-        future: [],
-        past: []
-    };
-    body.forEach(function (cur) {
-        var json = {};
-        json['code'] = cur['id'];
-        json['name'] = cur['name'];
-        json['duration'] = cur['durationSeconds'];
-        json['start'] = cur['startTimeSeconds'];
-        json['end'] = cur['startTimeSeconds'] + cur['durationSeconds'];
-        if (cur['phase'] === "CODING") ret.live.push(json);
-        else if (cur['phase'] === "BEFORE") ret.future.push(json);
-        else {
-            /*
-             * First check if limit is undefined or not
-             * If limit parameter is not passed it would be undefined.
-             */
-            if (typeof limit !== 'undefined') {
-                if (limit > 0) ret.past.push(json);
-                limit -= 1;
-            } else ret.past.push(json);
-        }
-    });
-    return ret;
-}
+});
 
 
 module.exports = router;
