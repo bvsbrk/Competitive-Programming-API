@@ -11,7 +11,7 @@ module.exports = function (res, callback, limit) {
     request(options, function (error, response, body) {
         body = JSON.parse(body);
         var resp = parse(body.response, limit);
-        res.json(resp);
+        callback(res, resp);
     });
 };
 
