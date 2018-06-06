@@ -71,16 +71,22 @@ function render_response(res) {
     total.past = total.past.concat(hke_resp.past);
     total.past = total.past.concat(hkr_resp.hackerrank.past);
     total.past = total.past.concat(hkr_resp.topcoder.past);
+
+    /* Sorting the contests */
+    total.live = total.live.sort(function (a, b) {
+        return a['end'] - b['end'];
+    });
+
+    total.future = total.future.sort(function (a, b) {
+        return a['start'] - b['start'];
+    });
+
+    total.past = total.past.sort(function (a, b) {
+        return b['end'] - a['end'];
+    });
+
+
     res.json(total);
 }
 
 module.exports = router;
-
-/*
-  codechef
-  codeforces
-  csacademy
-  hackerearth
-  hackerrank + topcoder
-
- */
