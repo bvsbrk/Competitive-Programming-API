@@ -3,6 +3,8 @@
  */
 
 var json = {
+    cache_duration: 60 * 1000,
+    codechef_contests_cache: "cc_contests_cache",
     normal_to_unix: function toUnix(date_string) {
         var date = new Date(date_string);
         return date.getTime() / 1000;

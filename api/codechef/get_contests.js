@@ -5,6 +5,7 @@ var tableParser = require('cheerio-tableparser');
 var config = require('../../config');
 var jsdom = require("jsdom");
 request = request.defaults({jar: true});
+var cache = require('memory-cache');
 
 var options = {
     url: urls.codechef_contests,
@@ -12,18 +13,33 @@ var options = {
 };
 
 module.exports = function (res, callback, limit) {
-    request(options, function (error, response, body) {
-        var dom = new jsdom.JSDOM(body);
-        var resp = parseHtml(dom.window.document);
+    var cached = cache.get(config.codechef_contests_cache);
 
-        if (typeof limit !== 'undefined') {
-            var required = [];
-            for (var i = 0; i < Math.min(resp.past.length, limit); i++) required.push(resp.past[i]);
-            resp.past = required;
-        }
+    /*
+     * Get the cached response first.
+     * If it is null perform request else send the cached response
+     * Time for which cache lives in server is 1 minute or 60,000 milli seconds
+     */
 
-        callback(res, resp);
-    });
+    if (cached == null) {
+        request(options, function (error, response, body) {
+            var dom = new jsdom.JSDOM(body);
+            var resp = parseHtml(dom.window.document);
+
+            if (typeof limit !== 'undefined') {
+                var required = [];
+                for (var i = 0; i < Math.min(resp.past.length, limit); i++) required.push(resp.past[i]);
+                resp.past = required;
+            }
+
+            /* Store resp in cache */
+            cache.put(config.codechef_contests_cache, resp, config.cache_duration);
+
+            callback(res, resp);
+        });
+    } else {
+        callback(res, cached);
+    }
 };
 
 
