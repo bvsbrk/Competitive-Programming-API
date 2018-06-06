@@ -4,7 +4,11 @@
 
 var json = {
     cache_duration: 60 * 1000,
-    codechef_contests_cache: "cc_contests_cache",
+    codechef_contests_cache: "cc_cs_ce",
+    codeforces_contests_cache: "cf_cs_ce",
+    csacademy_contests_cache: "csa_cs_ce",
+    hackerearth_contests_cache: "hke_cs_ce",
+    hackerrank_contests_cache: "hkr_cs_ce",
     normal_to_unix: function toUnix(date_string) {
         var date = new Date(date_string);
         return date.getTime() / 1000;

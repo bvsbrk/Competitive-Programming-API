@@ -1,22 +1,31 @@
 var request = require('request');
 var urls = require('../../urls');
+var config = require('../../config');
+var cache = require('memory-cache');
 
 module.exports = function (res, callback, limit) {
-    var options = {
-        url: urls.codeforces_contests
-    };
-    request(options, function (error, response, body) {
-        var resp = {
-            live: [],
-            future: [],
-            past: []
+
+    var cached = cache.get(config.codeforces_contests_cache);
+    if (cached == null) {
+        var options = {
+            url: urls.codeforces_contests
         };
-        body = JSON.parse(body);
-        if (body['status'] === "OK") {
-            resp = parse(body['result'], limit);
-        }
-        callback(res, resp);
-    });
+        request(options, function (error, response, body) {
+            var resp = {
+                live: [],
+                future: [],
+                past: []
+            };
+            body = JSON.parse(body);
+            if (body['status'] === "OK") {
+                resp = parse(body['result'], limit);
+            }
+
+            cache.put(config.codeforces_contests_cache, resp, config.cache_duration);
+            callback(res, resp);
+        });
+    } else callback(res, cached);
+
 };
 
 function parse(body, limit) {

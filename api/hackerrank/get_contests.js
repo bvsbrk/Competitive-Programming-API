@@ -2,26 +2,32 @@ var request = require('request');
 request = request.defaults({jar: true});
 var ical2json = require('ical2json');
 var config = require('../../config');
+var cache = require('memory-cache');
 
 module.exports = function (res, callback, limit) {
-    request("https://www.hackerrank.com/calendar/cal.ics", function (err, response, body) {
-        var json = ical2json.convert(body);
-        var resp = parse(json['VCALENDAR'][0]['VEVENT'], limit);
-        resp.hackerrank.past.reverse();
-        if (typeof limit !== 'undefined') {
-            var recent = [];
-            for (var i = 0; i < Math.min(limit, resp.hackerrank.past.length); i++) {
-                recent.push(resp.hackerrank.past[i]);
+    var cached = cache.get(config.hackerrank_contests_cache);
+    if (cached == null) {
+        request("https://www.hackerrank.com/calendar/cal.ics", function (err, response, body) {
+            var json = ical2json.convert(body);
+            var resp = parse(json['VCALENDAR'][0]['VEVENT'], limit);
+            resp.hackerrank.past.reverse();
+            if (typeof limit !== 'undefined') {
+                var recent = [];
+                for (var i = 0; i < Math.min(limit, resp.hackerrank.past.length); i++) {
+                    recent.push(resp.hackerrank.past[i]);
+                }
+                resp.hackerrank.past = recent;
+                recent = [];
+                for (i = 0; i < Math.min(limit, resp.topcoder.past.length); i++) {
+                    recent.push(resp.topcoder.past[i]);
+                }
+                resp.topcoder.past = recent;
             }
-            resp.hackerrank.past = recent;
-            recent = [];
-            for (i = 0; i < Math.min(limit, resp.topcoder.past.length); i++) {
-                recent.push(resp.topcoder.past[i]);
-            }
-            resp.topcoder.past = recent;
-        }
-        callback(res, resp);
-    })
+
+            cache.put(config.hackerrank_contests_cache,resp,config.cache_duration);
+            callback(res, resp);
+        })
+    } else callback(res, cached);
 };
 
 function parse(received) {

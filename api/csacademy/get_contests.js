@@ -1,32 +1,38 @@
 var request = require('request');
 var urls = require('../../urls');
 var config = require('../../config');
+var cache = require('memory-cache');
 
 request = request.defaults({jar: true});
 
 module.exports = function (res, callback, limit) {
-    var options = {
-        url: urls.csacademy_contests,
-        headers: urls.csacademy_header
-    };
 
-    request(options, function (error, response, body) {
-        body = JSON.parse(body);
-        var resp = parse(body['state']['Contest'], limit);
+    var cached = cache.get(config.csacademy_contests_cache);
+    if (cached == null) {
+        var options = {
+            url: urls.csacademy_contests,
+            headers: urls.csacademy_header
+        };
+        request(options, function (error, response, body) {
+            body = JSON.parse(body);
+            var resp = parse(body['state']['Contest'], limit);
 
-        /* past contests are not fetched in recent order. So reversing the list helps*/
-        resp.past.reverse();
+            /* past contests are not fetched in recent order. So reversing the list helps*/
+            resp.past.reverse();
 
-        if (typeof limit !== 'undefined') {
-            var recent = [];
-            for (var i = 0; i < Math.min(limit, resp.past.length); i++) {
-                recent.push(resp.past[i]);
+            if (typeof limit !== 'undefined') {
+                var recent = [];
+                for (var i = 0; i < Math.min(limit, resp.past.length); i++) {
+                    recent.push(resp.past[i]);
+                }
+                resp.past = recent;
             }
-            resp.past = recent;
-        }
-        callback(res, resp);
 
-    });
+            cache.put(config.csacademy_contests_cache, resp, config.cache_duration);
+            callback(res, resp);
+
+        });
+    } else callback(res, cached);
 };
 
 function parse(contest_array) {

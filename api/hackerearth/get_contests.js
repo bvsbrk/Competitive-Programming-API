@@ -1,18 +1,24 @@
 var request = require('request');
 var urls = require('../../urls');
 var config = require('../../config');
+var cache = require('memory-cache');
 
 request = request.defaults({jar: true});
 
 module.exports = function (res, callback, limit) {
-    var options = {
-        url: urls.hackerearth_contests
-    };
-    request(options, function (error, response, body) {
-        body = JSON.parse(body);
-        var resp = parse(body.response, limit);
-        callback(res, resp);
-    });
+    var cached = cache.get(config.hackerearth_contests_cache);
+    if (cached == null) {
+        var options = {
+            url: urls.hackerearth_contests
+        };
+        request(options, function (error, response, body) {
+            body = JSON.parse(body);
+            var resp = parse(body.response, limit);
+
+            cache.put(config.hackerearth_contests_cache, resp, config.cache_duration);
+            callback(res, resp);
+        });
+    } else callback(res, cached)
 };
 
 function parse(body, limit) {
