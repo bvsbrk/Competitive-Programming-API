@@ -23,6 +23,7 @@ function parse(body, limit) {
     };
     body.forEach(function (cur) {
         var json = {};
+        json['platform'] = "hackerearth";
         json['name'] = cur['title'];
         json['url'] = cur['url'];
         json['start'] = config.normal_to_unix(cur['start_utc_tz']);

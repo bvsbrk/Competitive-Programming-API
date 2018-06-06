@@ -27,6 +27,7 @@ function parse(body, limit) {
     };
     body.forEach(function (cur) {
         var json = {};
+        json['platform'] = "codeforces";
         json['code'] = cur['id'];
         json['name'] = cur['name'];
         json['duration'] = cur['durationSeconds'];

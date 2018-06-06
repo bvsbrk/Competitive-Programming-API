@@ -56,6 +56,7 @@ function getContests(table) {
      */
     for (var i = 1; i < data[0].length; i++) {
         var json = {};
+        json['platform'] = "codechef";
         json['code'] = data[0][i];
         json['name'] = data[1][i];
         json['start'] = config.normal_to_unix(data[2][i]);

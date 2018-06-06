@@ -41,6 +41,7 @@ function parse(contest_array) {
             var cur_time = config.normal_to_unix((new Date()).toDateString());
             var contest_start = cur['startTime'];
             var contest_end = cur['endTime'];
+            json['platform'] = "csacademy";
             json['code'] = cur['name'];
             json['name'] = cur['longName'];
             json['start'] = cur['startTime'];

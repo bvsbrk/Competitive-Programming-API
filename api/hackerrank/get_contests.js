@@ -41,6 +41,7 @@ function parse(received) {
         var json = {};
         if (cur['LOCATION']) {
             if (cur['LOCATION'].includes("hackerrank")) {
+                json['platform'] = "hackerrank";
                 json['start'] = config.ics_to_unix(cur['DTSTART']);
                 json['end'] = config.ics_to_unix(cur['DTEND']);
                 json['duration'] = json['end'] - json['start'];
@@ -52,6 +53,7 @@ function parse(received) {
                 else resp.hackerrank.past.push(json);
             }
             else if (cur['LOCATION'].includes("topcoder")) {
+                json['platform'] = "topcoder";
                 json['start'] = config.ics_to_unix(cur['DTSTART']);
                 json['end'] = config.ics_to_unix(cur['DTEND']);
                 json['duration'] = json['end'] - json['start'];
